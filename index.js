@@ -4,6 +4,7 @@
 var path = require('path');
 var Funnel = require('broccoli-funnel');
 var MergeTrees = require('broccoli-merge-trees');
+var map = require('broccoli-stew').map;
 
 module.exports = {
   name: 'ember-hammertime',
@@ -31,6 +32,7 @@ module.exports = {
     var hammertimeTree = new Funnel(path.dirname(require.resolve('hammer-timejs/hammer-time.js')), {
       files: ['hammer-time.js'],
     });
+    hammertimeTree = map(hammertimeTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
     if (vendorTree !== undefined) {
       trees.push(vendorTree);
